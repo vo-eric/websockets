@@ -13,28 +13,21 @@ let io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('user connected');
-
   socket.emit('newMessage', 
     generateMessage('Admin', 'Welcome to the chat room'));
 
   socket.broadcast.emit('newMessage',
     generateMessage('Admin', 'User has joined the chat room'));
 
-  socket.on('createMessage', (message) => {
-    console.log('createdMessage', message);
-    
+  socket.on('createMessage', (message, cb) => {
     io.emit('newMessage', 
       generateMessage(message.from, message.text));
-  // socket.broadcast.emit('newMessage', {
-  //   from: message.from,
-  //   text: message.text,
-  //   createdAt: new Date().getTime()
-  // });
+    cb('This is from the server');
   });
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    socket.broadcast.emit('newMessage',
+      generateMessage('Admin', 'User has left the chanel'));
   });
 });
 

@@ -4,11 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
   <title>Web Sockets</title>
 </head>
 <body>
   <h1>Hello</h1>
   <p>Welcome to the chat app</p>
+
+  <ol id="messages">
+  </ol>
+
+  <form id="message-form">
+    <input type="text" name="message" placeholder="Message" />
+    <button>Send</button>
+  </form>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/index.js"></script>
 </body>
