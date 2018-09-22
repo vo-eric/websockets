@@ -14,13 +14,31 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('user connected');
 
+  socket.emit('newMessage', {
+    from: 'Admin',
+    text: 'Hello, welcome to the chatroom',
+    createdAt: new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'User joined the channel.',
+    createdAt: new Date().getTime()
+  });
+
   socket.on('createMessage', (message) => {
     console.log('createdMessage', message);
+    
     io.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
     });
+  // socket.broadcast.emit('newMessage', {
+  //   from: message.from,
+  //   text: message.text,
+  //   createdAt: new Date().getTime()
+  // });
   });
 
   socket.on('disconnect', () => {
