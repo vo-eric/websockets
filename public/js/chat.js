@@ -15,7 +15,26 @@ function scroll() {
 }
 
 socket.on('connect', function () {
-  console.log('connected to server');
+  let params = jQuery.deparam(window.location.search);
+
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      //replace with error in form
+      window.location.href = '/';
+    }
+    console.log('yay');
+  });
+});
+
+socket.on('updateUserList', function(users) {
+  let ol = jQuery('<ol></ol>');
+
+  users.forEach((user) => {
+    ol.append(jQuery('<li></li>').text(user));
+  });
+
+  jQuery('#users').html(ol);
 });
 
 socket.on('disconnect', function () {
