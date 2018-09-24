@@ -1,5 +1,19 @@
 let socket = io();
 
+function scroll() {
+  let messages = jQuery('#messages'),
+      newMessage = messages.children('li:last-child'),
+      clientHeight = messages.prop('clientHeight'),
+      scrollTop = messages.prop('scrollTop'),
+      scrollHeight = messages.prop('scrollHeight'),
+      newMessageHeight = newMessage.innerHeight(),
+      lastMessageHeight = newMessage.prev().innerHeight();
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight);
+  }
+}
+
 socket.on('connect', function () {
   console.log('connected to server');
 });
@@ -9,35 +23,29 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function(message) {
-  let template = jQuery('#message-template').html();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
-  let html = Mustache.render(template, {
+  let template = jQuery('#message-template').html(),
+      formattedTime = moment(message.createdAt).format('h:mm a'),
+      html = Mustache.render(template, {
     text: message.text,
     from: message.from,
     createdAt: formattedTime
   });
 
   jQuery('#messages').append(html);
+  scroll();
 });
 
 socket.on('newLocationMessage', function(message) {
-  let template = jQuery('#location-message-template').html();
-  let formattedTime = moment(message.createdAt).format('h:mm a');
-  let html = Mustache.render(template, {
+  let template = jQuery('#location-message-template').html(),
+      formattedTime = moment(message.createdAt).format('h:mm a'),
+      html = Mustache.render(template, {
     from: message.from,
     url: message.url,
     createdAt: formattedTime
   });
 
   jQuery('#messages').append(html);
-  // let li = jQuery('<li></li>');
-  // let a = jQuery('<a target="_blank">Current Location</a>');
-  
-  // li.text(`${message.from} (${formattedTime}): `);
-  // a.attr('href', message.url);
-  // li.append(a);
-
-  // jQuery('#messages').append(li);
+  scroll();
 });
 
 jQuery('#message-form').on('submit', function(e) {
