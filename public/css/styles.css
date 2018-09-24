@@ -190,3 +190,8 @@ button:disabled {
     margin-right: 0
   }
 }
+
+a {
+  text-decoration: none;
+  color: steelblue;
+}
