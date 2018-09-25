@@ -4,7 +4,11 @@ class Users {
   }
 
   addUser(id, name, room) {
-    let user = {id, name, room};
+    let user = {
+      id,
+      name,
+      room
+    };
     this.users.push(user);
     return user;
   }
@@ -12,8 +16,8 @@ class Users {
   removeUser(id) {
     let user = this.getUser(id);
 
-    if(user) {
-      this.users.filter(user => user.id !== id);
+    if (user) {
+      this.users = this.users.filter(user => user.id !== id);
     }
     return user;
   }
@@ -29,4 +33,6 @@ class Users {
   }
 }
 
-module.exports = { Users };
+module.exports = {
+  Users
+};

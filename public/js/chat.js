@@ -30,7 +30,7 @@ socket.on('connect', function () {
 socket.on('updateUserList', function(users) {
   let ol = jQuery('<ol></ol>');
 
-  users.forEach((user) => {
+  users.forEach(function(user) {
     ol.append(jQuery('<li></li>').text(user));
   });
 
@@ -69,10 +69,9 @@ socket.on('newLocationMessage', function(message) {
 
 jQuery('#message-form').on('submit', function(e) {
   e.preventDefault();
-
   let messageBox = jQuery('[name=message]');
+
   socket.emit('createMessage', {
-    from: 'User',
     text: messageBox.val()
   }, function() {
     messageBox.val('');
